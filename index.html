@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Workspace Pro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body data-theme="light">
+    <div class="app-container">
+        <aside class="sidebar">
+            <div>
+                <div class="sidebar-brand">
+                    <div class="brand-icon">D</div>
+                    <span>Workspace Pro</span>
+                </div>
+                <ul class="sidebar-menu">
+                    <li class="menu-item active" data-target="dashboard-view">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>
+                        Dashboard
+                    </li>
+                    <li class="menu-item" data-target="notes-view">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                        Notes
+                    </li>
+                    <li class="menu-item" data-target="calendar-view">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                        Calendar
+                    </li>
+                    <li class="menu-item" data-target="kanban-view">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                        Kanban Board
+                    </li>
+                    <li class="menu-item" data-target="focus-view">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                        Focus Timer
+                    </li>
+                </ul>
+            </div>
+            <div class="sidebar-footer">
+                <span style="font-size:0.85rem;font-weight:500;color:var(--text-secondary)">Dark Mode</span>
+                <div class="theme-switch" id="themeToggleBtn" role="button" aria-label="Toggle Dark Mode"></div>
+            </div>
+        </aside>
+
+        <main class="main-frame">
+            <header class="top-header">
+                <div class="header-search-container">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <input type="text" id="globalAppSearch" placeholder="Search notes... (Ctrl+K)">
+                    <span class="shortcut-badge">Ctrl+K</span>
+                </div>
+                <div class="header-meta">
+                    <div class="date-clock-display" id="headerClock">Loading...</div>
+                </div>
+            </header>
+
+            <div class="workspace-view-container">
+
+                <!-- DASHBOARD -->
+                <section id="dashboard-view" class="workspace-view active-view">
+                    <div class="dashboard-layout">
+                        <div class="dashboard-hero">
+                            <h1 id="dashGreeting">Hello, Operator</h1>
+                            <p>Welcome back to your central workspace. Here is your overview for today.</p>
+                            <div class="quote-box" id="dashQuote">"The secret of getting ahead is getting started."</div>
+                        </div>
+                        <div class="widget-grid">
+                            <div class="stat-card">
+                                <span class="stat-label">Notes</span>
+                                <div class="stat-val" id="statNotesCount">0</div>
+                                <span class="stat-desc">Total saved notes</span>
+                            </div>
+                            <div class="stat-card">
+                                <span class="stat-label">Active Tasks</span>
+                                <div class="stat-val" id="statTasksCount">0</div>
+                                <span class="stat-desc">Not yet finalized</span>
+                            </div>
+                            <div class="stat-card">
+                                <span class="stat-label">Next Event</span>
+                                <div class="stat-val" id="statNextEvent" style="font-size:1.1rem;font-weight:600;line-height:1.4;white-space:pre-line;">None</div>
+                                <span class="stat-desc">Upcoming calendar event</span>
+                            </div>
+                            <div class="stat-card">
+                                <span class="stat-label">Focus Sessions</span>
+                                <div class="stat-val" id="statFocusStreak">0</div>
+                                <span class="stat-desc">Sessions logged today</span>
+                            </div>
+                        </div>
+                        <div class="dashboard-lower-grid">
+                            <div class="panel-card">
+                                <h3>Weekly Activity</h3>
+                                <div class="chart-container" id="weeklyVelocityChart"></div>
+                            </div>
+                            <div class="panel-card">
+                                <h3>Quick Actions</h3>
+                                <div class="quick-actions-list">
+                                    <button class="btn btn-primary" id="actionQuickNote" style="width:100%">+ New Note</button>
+                                    <button class="btn btn-secondary" id="actionQuickTask" style="width:100%">+ Add Kanban Card</button>
+                                    <button class="btn btn-secondary" id="actionQuickEvent" style="width:100%">+ Schedule Event</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- NOTES -->
+                <section id="notes-view" class="workspace-view">
+                    <div class="notes-layout">
+                        <aside class="notes-sidebar">
+                            <div class="notes-search-bar">
+                                <input type="text" class="form-control" id="notesSearchField" placeholder="Search notes...">
+                                <div class="notes-list-controls">
+                                    <select id="notesSortSelect">
+                                        <option value="modified">Modified</option>
+                                        <option value="created">Created</option>
+                                        <option value="alpha">A–Z</option>
+                                    </select>
+                                    <button class="btn btn-primary" id="createNewNoteBtn" style="padding:6px 12px;font-size:0.8rem;">+ New</button>
+                                </div>
+                            </div>
+                            <ul class="notes-list" id="notesDOMList"></ul>
+                        </aside>
+                        <div class="notes-editor-pane">
+                            <div class="editor-header">
+                                <input type="text" class="note-title-input" id="editorNoteTitle" placeholder="Untitled Note" disabled>
+                                <div class="editor-actions">
+                                    <span class="save-status" id="editorSaveIndicator">Select a note</span>
+                                    <button class="btn btn-secondary" id="pinNoteToggleBtn" style="padding:6px 12px;font-size:0.8rem;">Pin</button>
+                                    <button class="btn btn-danger" id="deleteNoteBtn" style="padding:6px 12px;font-size:0.8rem;">Delete</button>
+                                </div>
+                            </div>
+                            <div class="editor-toolbar">
+                                <button class="toolbar-btn" data-cmd="bold"><strong>B</strong></button>
+                                <button class="toolbar-btn" data-cmd="italic" style="font-style:italic;">I</button>
+                                <button class="toolbar-btn" data-cmd="underline" style="text-decoration:underline;">U</button>
+                                <div style="width:1px;height:20px;background:var(--border-color);margin:0 8px;"></div>
+                                <div class="color-picker-group" id="noteColorPicker">
+                                    <div class="color-opt" data-color="#4f46e5" style="background:#4f46e5;" title="Indigo"></div>
+                                    <div class="color-opt" data-color="#10b981" style="background:#10b981;" title="Green"></div>
+                                    <div class="color-opt" data-color="#f59e0b" style="background:#f59e0b;" title="Amber"></div>
+                                    <div class="color-opt" data-color="#ef4444" style="background:#ef4444;" title="Red"></div>
+                                    <div class="color-opt" data-color="#6b7280" style="background:#6b7280;" title="Gray"></div>
+                                </div>
+                            </div>
+                            <div class="editor-body" id="editorWYSIWYG" contenteditable="false" placeholder="Select or create a note to start writing..."></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- CALENDAR -->
+                <section id="calendar-view" class="workspace-view">
+                    <div class="calendar-layout">
+                        <div class="calendar-header-actions">
+                            <div class="calendar-nav">
+                                <button class="btn btn-secondary" id="calPrevBtn">&lt;</button>
+                                <h2 class="current-month-year" id="calMonthYearTitle">June 2026</h2>
+                                <button class="btn btn-secondary" id="calNextBtn">&gt;</button>
+                            </div>
+                            <div style="display:flex;gap:8px;">
+                                <button class="btn btn-secondary active" id="calToggleMonthView">Month</button>
+                                <button class="btn btn-secondary" id="calToggleWeekView">Week</button>
+                            </div>
+                        </div>
+                        <div class="calendar-grid-container">
+                            <div id="calendarMonthPerspective">
+                                <div class="weekday-row">
+                                    <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+                                </div>
+                                <div class="month-grid" id="monthCellsContainer"></div>
+                            </div>
+                            <div id="calendarWeekPerspective" class="week-view-timeline">
+                                <div class="week-grid" id="weekCellsContainer"></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- KANBAN -->
+                <section id="kanban-view" class="workspace-view">
+                    <div class="kanban-layout">
+                        <div class="kanban-controls">
+                            <span style="font-weight:600;font-size:1rem;">Kanban Board</span>
+                            <button class="btn btn-primary" id="addKanbanCardGlobalBtn">+ Add Card</button>
+                        </div>
+                        <div class="kanban-board-scroll">
+                            <div class="kanban-column" id="col-todo" data-status="todo">
+                                <div class="column-header">
+                                    <div class="column-title-set">
+                                        <span>Backlog</span>
+                                        <span class="column-badge" id="badge-todo">0</span>
+                                    </div>
+                                </div>
+                                <div class="cards-container"></div>
+                                <button class="add-card-trigger" data-status="todo">+ Add Card</button>
+                            </div>
+                            <div class="kanban-column" id="col-progress" data-status="progress">
+                                <div class="column-header">
+                                    <div class="column-title-set">
+                                        <span>In Progress</span>
+                                        <span class="column-badge" id="badge-progress">0</span>
+                                    </div>
+                                </div>
+                                <div class="cards-container"></div>
+                                <button class="add-card-trigger" data-status="progress">+ Add Card</button>
+                            </div>
+                            <div class="kanban-column" id="col-review" data-status="review">
+                                <div class="column-header">
+                                    <div class="column-title-set">
+                                        <span>In Review</span>
+                                        <span class="column-badge" id="badge-review">0</span>
+                                    </div>
+                                </div>
+                                <div class="cards-container"></div>
+                                <button class="add-card-trigger" data-status="review">+ Add Card</button>
+                            </div>
+                            <div class="kanban-column" id="col-done" data-status="done">
+                                <div class="column-header">
+                                    <div class="column-title-set">
+                                        <span>Done</span>
+                                        <span class="column-badge" id="badge-done">0</span>
+                                    </div>
+                                </div>
+                                <div class="cards-container"></div>
+                                <button class="add-card-trigger" data-status="done">+ Add Card</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- FOCUS TIMER -->
+                <section id="focus-view" class="workspace-view">
+                    <div class="focus-layout">
+                        <div class="timer-centerpiece">
+                            <div class="timer-tabs">
+                                <button class="timer-tab active" data-type="pomodoro">Pomodoro</button>
+                                <button class="timer-tab" data-type="short">Short Break</button>
+                                <button class="timer-tab" data-type="long">Long Break</button>
+                            </div>
+                            <div class="svg-timer-container">
+                                <svg class="svg-timer-ring" width="260" height="260">
+                                    <circle class="ring-bg" cx="130" cy="130" r="120"></circle>
+                                    <circle class="ring-progress" id="timerProgressRing" cx="130" cy="130" r="120"></circle>
+                                </svg>
+                                <div class="timer-countdown-text" id="timerTimeStr">25:00</div>
+                            </div>
+                            <div class="timer-controls">
+                                <button class="btn btn-primary" id="timerStartPauseBtn">Start</button>
+                                <button class="btn btn-secondary" id="timerResetBtn">Reset</button>
+                            </div>
+                            <div class="current-task-display">
+                                <p id="timerActiveTaskText" style="font-weight:500;color:var(--text-secondary)">No task linked to this session.</p>
+                            </div>
+                        </div>
+                        <aside class="timer-sidebar-panel panel-card">
+                            <h3>Session Log</h3>
+                            <ul class="log-list" id="timerLogDOMList"></ul>
+                        </aside>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <div class="toast-container" id="toastOutlet"></div>
+
+    <div class="modal-overlay" id="appUniversalModal">
+        <div class="modal-wrapper">
+            <div class="modal-header">
+                <h3 id="modalTitle">Add Item</h3>
+                <button class="modal-close-btn" id="modalCloseAction">&times;</button>
+            </div>
+            <form id="modalFormPayload">
+                <div class="modal-body" id="modalDynamicBody"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="modalCancelAction">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="modalSubmitAction">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
