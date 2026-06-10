@@ -941,7 +941,7 @@ class FocusModule {
         const inProgress = MockDatabase.tasks.filter(t => t.status === 'progress');
         const taskDisplay = document.getElementById('timerActiveTaskText');
         if (taskDisplay && inProgress.length > 0) {
-            taskDisplay.innerText = `🎯 Focusing on: ${inProgress[0].title}`;
+            taskDisplay.innerText = `Focusing on: ${inProgress[0].title}`;
         }
     }
 }
